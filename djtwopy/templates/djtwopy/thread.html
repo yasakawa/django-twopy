@@ -1,0 +1,15 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{{ thread.title }}</title>
+</head>
+<body bgcolor=#efefef text=black link=blue alink=red vlink=#660099>
+<hr style="background-color:#888;color:#888;border-width:0;height:1px;position:relative;top:-.4em;">
+<h1 style="color:red;font-size:larger;font-weight:normal;margin:-.5em 0 0;">{{ thread.title }}</h1>
+<dl class="thread">
+{% for comment in comments %}
+<dt>{{ comment.number }} ：<a href="mailto:{{ comment.mailaddr }}"><b>{{ comment.name }}</b></a>：{{ comment.datestr }} ID:{{ comment.user_id }}
+<dd><font color="red">{% for tag in comment.tags.all %}{{ tag }}&nbsp;{% endfor %}</font>{{ comment.body|linebreaks }}
+{% endfor %}
+</body>
+</html>
