@@ -28,20 +28,20 @@ $ python setup.py install
 ```
 INSTALLED_APPS = (
     ...
-    'django_twopy',
+    'djtwopy',
 )
 ```
 
 3 url.pyにURLconfをインクルードする
 
 ```
-url(r'^django_twopy/', include('django_twopy.urls')),
+url(r'^djtwopy/', include('djtwopy.urls')),
 ```
 
 4 データベースにModelを登録する
 
 ```
-$ python manage.py syncdb
+$ python manage.py migrate djtwopy
 ```
 
 著者
