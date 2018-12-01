@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.core.urlresolvers import reverse
-import .models
+from . import models
 
 class DtThreadAdmin(admin.ModelAdmin):
     list_display = ('id', 'url', 'title', 'res', 'date_updated')
