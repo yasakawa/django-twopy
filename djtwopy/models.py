@@ -10,18 +10,18 @@ from taggit.managers import TaggableManager
 USE_TZ = getattr(settings, 'USE_TZ', True)
 
 class DtThread(models.Model):
-    url = models.CharField(u'URL', max_length=128, default='')
-    filename = models.CharField(u'Filename', max_length=128)
-    title = models.CharField(u'Title', max_length=128, blank=True)
-    res = models.IntegerField(u'ResNumber', null=False, blank=False, default=0)
+    url = models.CharField('URL', max_length=128, default='')
+    filename = models.CharField('Filename', max_length=128)
+    title = models.CharField('Title', max_length=128, blank=True)
+    res = models.IntegerField('ResNumber', null=False, blank=False, default=0)
     tags = TaggableManager()
 
     """ for System Management """
-    date_created = models.DateTimeField(u'Created Date', auto_now_add=True)
-    date_updated = models.DateTimeField(u'Updated Date', auto_now=True)
+    date_created = models.DateTimeField('Created Date', auto_now_add=True)
+    date_updated = models.DateTimeField('Updated Date', auto_now=True)
 
     def thread_id(self):
-        return self.filename.replace(u'.dat', u'')
+        return self.filename.replace('.dat', '')
 
     def get_comment(self, number):
         return DtComment.objects.get(thread__exact=self, number__exact=number)
@@ -35,23 +35,23 @@ class DtComment(models.Model):
     number : スレッドからの、コメント位置.
     """
     thread = models.ForeignKey('DtThread', related_name='comments')
-    number = models.IntegerField(u'Number', null=True, blank=True)
-    line = models.CharField(u'Line', max_length=4096, blank=True)
-    name = models.CharField(u'Name', max_length=128, blank=True)
-    mailaddr = models.CharField(u'Name', max_length=128, blank=True)
-    datestr = models.CharField(u'Name', max_length=32, blank=True)
-    body = models.TextField(u'Body', max_length=4096, blank=True)
-    datetime = models.DateTimeField(u'Posted Date', blank=True)
-    user_id = models.CharField(u'ID', max_length=64, blank=True)
-    be = models.CharField(u'BE', max_length=64, null=True, blank=True)
+    number = models.IntegerField('Number', null=True, blank=True)
+    line = models.CharField('Line', max_length=4096, blank=True)
+    name = models.CharField('Name', max_length=128, blank=True)
+    mailaddr = models.CharField('Name', max_length=128, blank=True)
+    datestr = models.CharField('Name', max_length=32, blank=True)
+    body = models.TextField('Body', max_length=4096, blank=True)
+    datetime = models.DateTimeField('Posted Date', blank=True)
+    user_id = models.CharField('ID', max_length=64, blank=True)
+    be = models.CharField('BE', max_length=64, null=True, blank=True)
     tags = TaggableManager()
 
     """ Custom Fields """
-    body_html = models.TextField(u'Body(HTML)', max_length=8192, blank=True)
+    body_html = models.TextField('Body(HTML)', max_length=8192, blank=True)
 
     """ for System Management """
-    date_created = models.DateTimeField(u'Created Date', auto_now_add=True)
-    date_updated = models.DateTimeField(u'Updated Date', auto_now=True)
+    date_created = models.DateTimeField('Created Date', auto_now_add=True)
+    date_updated = models.DateTimeField('Updated Date', auto_now=True)
 
     __urls = re.compile(r"(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+)")
     __response = re.compile((r"(>>\d{1,4}|＞＞[０-９]{1,4})"
