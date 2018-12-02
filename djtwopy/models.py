@@ -126,12 +126,12 @@ class DtComment(models.Model):
         取得したコメントから、整形された文章を返します.
         """
         if self.be:
-            header = u"%i 名前:%s [%s]: %s ID:%s BE:%s" % \
+            header = "%i 名前:%s [%s]: %s ID:%s BE:%s" % \
                 (self.number, self.name, self.mailaddr, self.date, self.ID, self.be)
         else:
-            header = u"%i 名前:%s [%s]: %s ID:%s" % \
+            header = "%i 名前:%s [%s]: %s ID:%s" % \
                 (self.number, self.name, self.mailaddr, self.date, self.ID)
-        return u"%s\n%s\n" % (header, self.body)
+        return "%s\n%s\n" % (header, self.body)
 
     class Meta:
         index_together = (("thread", "number"),)
