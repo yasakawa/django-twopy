@@ -66,7 +66,7 @@ class DtComment(models.Model):
         """ bodyからREMOVE_TEXTSを削除した文字列を返す """
         retstr = self.body
         for remove_text in REMOVE_TEXTS:
-            retstr = restr.replace(remove_text, '')
+            retstr = retstr.replace(remove_text, '')
         return retstr
 
     def setThread(self, thread):
