@@ -9,6 +9,10 @@ from taggit.managers import TaggableManager
 
 USE_TZ = getattr(settings, 'USE_TZ', True)
 
+# DtComment.body_cleaned()でbodyから削除する文字列
+REMOVE_TEXTS = ['(deleted an unsolicited ad)']
+
+
 class DtThread(models.Model):
     url = models.CharField('URL', max_length=128, default='')
     filename = models.CharField('Filename', max_length=128)
@@ -40,6 +44,7 @@ class DtComment(models.Model):
     name = models.CharField('Name', max_length=128, blank=True)
     mailaddr = models.CharField('Name', max_length=128, blank=True)
     datestr = models.CharField('Name', max_length=32, blank=True)
+    # bodyを利用する際は、特定の文字列が除去されたbody_cleaned()の利用も検討ください
     body = models.TextField('Body', max_length=4096, blank=True)
     datetime = models.DateTimeField('Posted Date', blank=True)
     user_id = models.CharField('ID', max_length=64, blank=True)
@@ -56,6 +61,13 @@ class DtComment(models.Model):
     __urls = re.compile(r"(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+)")
     __response = re.compile((r"(>>\d{1,4}|＞＞[０-９]{1,4})"
                               "(-\d{1,4}|−[０-９]{1,4}|)"))
+
+    def body_cleaned(self):
+        """ bodyからREMOVE_TEXTSを削除した文字列を返す """
+        retstr = self.body
+        for remove_text in REMOVE_TEXTS:
+            retstr = restr.replace(remove_text, '')
+        return retstr
 
     def setThread(self, thread):
         """ bbs2ch.Threadのインスタンスを引数で受けてメンバを初期化する """
@@ -85,7 +97,7 @@ class DtComment(models.Model):
         """
         オリジナル版から __responses_cache の機能を除いている。
         """
-        result = DtComment.__response.finditer(self.body)
+        result = DtComment.__response.finditer(self.body_cleaned())
         l = [(r.group(1), r.group(2)) for r in result]
         return l
 
@@ -131,7 +143,7 @@ class DtComment(models.Model):
         else:
             header = "%i 名前:%s [%s]: %s ID:%s" % \
                 (self.number, self.name, self.mailaddr, self.date, self.ID)
-        return "%s\n%s\n" % (header, self.body)
+        return "%s\n%s\n" % (header, self.body_cleaned())
 
     class Meta:
         index_together = (("thread", "number"),)
